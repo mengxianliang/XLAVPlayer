@@ -52,6 +52,7 @@
     _controlView = [[XLPlayerControlView alloc] init];
     [self addSubview:_controlView];
     
+    
     __weak typeof (self)weekSelf = self;
     [_controlView addControlBlockPlay:^(BOOL play) {
         if (play) {
