@@ -17,6 +17,8 @@
     NSTimer *_timer;
     
     XLPlayerControlView *_controlView;
+    
+    VoidBlock _backBlock;
 }
 @end
 
@@ -61,12 +63,16 @@
             [weekSelf pause];
         }
     } seek:^(CGFloat value) {
-        
+        [weekSelf seekToPercent:value];
+    } back:^{
+        [weekSelf back];
     }];
     
     _timer = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(updatePlayer) userInfo:nil repeats:true];
     [_timer setFireDate:[NSDate distantFuture]];
 }
+
+
 
 -(void)layoutSubviews{
     
@@ -83,13 +89,13 @@
     
     switch (_player.status) {
         case AVPlayerStatusUnknown:
-            NSLog(@"加载中");
+//            NSLog(@"加载中");
             break;
         case AVPlayerStatusReadyToPlay:
-            NSLog(@"可以播放");
+//            NSLog(@"可以播放");
             break;
         case AVPlayerStatusFailed:
-            NSLog(@"加载失败");
+//            NSLog(@"加载失败");
             break;
             
         default:
@@ -97,13 +103,15 @@
     }
 }
 
--(void)showInView:(UIView *)view frame:(CGRect)frame{
+-(void)showInView:(UIView*)view frame:(CGRect)frame back:(VoidBlock)back{
     
     [_timer setFireDate:[NSDate date]];
     
     [view addSubview:self];
     
     self.frame = frame;
+    
+    _backBlock = back;
 }
 
 #pragma mark -
@@ -123,7 +131,7 @@
 }
 
 -(void)pause{
-    
+
     [_player pause];
 }
 
@@ -131,6 +139,19 @@
     
     [_timer setFireDate:[NSDate distantFuture]];
     [_player pause];
+}
+
+-(void)seekToPercent:(CGFloat)percent
+{
+    CGFloat second = CMTimeGetSeconds(_player.currentItem.duration) * percent;
+    [_player seekToTime:CMTimeMakeWithSeconds(second, 1) completionHandler:^(BOOL finished) {
+        [_controlView seekFinished];
+    }];
+}
+
+-(void)back{
+    _backBlock();
+    [self stop];
 }
 
 #pragma mark -

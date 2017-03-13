@@ -27,6 +27,7 @@ typedef NS_ENUM(NSInteger,XLAVPlayerStatus){
 
 +(XLAVPlayer*)sharePlayer;
 
--(void)showInView:(UIView*)view frame:(CGRect)frame;
+-(void)showInView:(UIView*)view frame:(CGRect)frame back:(VoidBlock)back;
+
 
 @end

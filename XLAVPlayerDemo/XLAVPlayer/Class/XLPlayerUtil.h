@@ -13,6 +13,8 @@ typedef void(^PlayBlock)(BOOL play);
 
 typedef void(^SeekBlock)(CGFloat value);
 
+typedef void(^VoidBlock)(void);
+
 @interface XLPlayerUtil : NSObject
 
 //Second ---> timeString

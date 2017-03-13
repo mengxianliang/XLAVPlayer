@@ -13,9 +13,10 @@
 
 @property (assign,nonatomic) BOOL isFullScreen;
 
-
 @property (strong, nonatomic) AVPlayerItem *item;
 
--(void)addControlBlockPlay:(PlayBlock)playBlock seek:(SeekBlock)seekBlock;
+-(void)addControlBlockPlay:(PlayBlock)playBlock seek:(SeekBlock)seekBlock back:(VoidBlock)back;
+
+-(void)seekFinished;
 
 @end

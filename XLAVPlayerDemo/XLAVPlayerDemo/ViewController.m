@@ -7,10 +7,12 @@
 //
 
 #import "ViewController.h"
-#import "XLAVPlayer.h"
+#import "ShowPlayerViewController.h"
 
-@interface ViewController ()
-
+@interface ViewController ()<UITableViewDelegate,UITableViewDataSource>
+{
+    UITableView *_tableView;
+}
 @end
 
 @implementation ViewController
@@ -18,10 +20,52 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    [[XLAVPlayer sharePlayer] showInView:self.view frame:CGRectMake(0, 0, self.view.bounds.size.width, 250)];
-    [XLAVPlayer sharePlayer].playUrl = [NSURL URLWithString:@"http://v.jxvdy.com/sendfile/w5bgP3A8JgiQQo5l0hvoNGE2H16WbN09X-ONHPq3P3C1BISgf7C-qVs6_c8oaw3zKScO78I--b0BGFBRxlpw13sf2e54QA"];
+    [self buildUI];
 }
 
+-(void)buildUI
+{
+    self.view.backgroundColor = [UIColor whiteColor];
+    self.title = @"XLAVPlayer";
+    
+    _tableView = [[UITableView alloc] initWithFrame:self.view.bounds style:UITableViewStylePlain];
+    _tableView.delegate = self;
+    _tableView.dataSource = self;
+    _tableView.tableFooterView = [UIView new];
+    [self.view addSubview:_tableView];
+}
+
+
+#pragma mark -
+#pragma mark TableViewDelegate&DataSource
+
+-(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return 50;
+}
+
+-(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    return 1;
+}
+
+
+-(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    NSString* cellIdentifier = @"cell";
+    UITableViewCell* cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
+    if (cell == nil) {
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier];
+    }
+    cell.textLabel.text = @"Show Player";
+    return cell;
+}
+
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    ShowPlayerViewController *showPlayerVC = [[ShowPlayerViewController alloc] init];
+    [self.navigationController pushViewController:showPlayerVC animated:true];
+}
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

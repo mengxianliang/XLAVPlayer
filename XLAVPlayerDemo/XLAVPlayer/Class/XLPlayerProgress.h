@@ -13,4 +13,8 @@
 
 @property (nonatomic,strong) AVPlayerItem *item;
 
+@property (nonatomic, assign) BOOL seeking;
+
+-(void)addSeekBlockSeeking:(SeekBlock)seeking finished:(SeekBlock)finish;
+
 @end

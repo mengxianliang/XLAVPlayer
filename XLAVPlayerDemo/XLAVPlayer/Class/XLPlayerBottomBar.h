@@ -11,6 +11,10 @@
 
 @interface XLPlayerBottomBar : UIView
 
-@property (nonatomic,strong) AVPlayerItem *item;
+@property (nonatomic, strong) AVPlayerItem *item;
+
+-(void)addSeekBlock:(SeekBlock)finish;
+
+-(void)seekFinished;
 
 @end

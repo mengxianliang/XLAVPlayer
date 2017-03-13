@@ -13,6 +13,10 @@
     UISlider *_bufferSlider;
     
     UISlider *_playTimeSlider;
+    
+    SeekBlock _seekingBlock;
+    
+    SeekBlock _seekFinishBlock;
 }
 @end
 
@@ -38,6 +42,8 @@
     [_playTimeSlider setMinimumTrackTintColor:[UIColor colorWithRed:218/255.0f green:78/255.0f blue:78/255.0f alpha:1]];
     [_playTimeSlider setMaximumTrackTintColor:[UIColor clearColor]];
     [_playTimeSlider setThumbImage:[UIImage imageNamed:@"sliderThumImage"] forState:UIControlStateNormal];
+    [_playTimeSlider addTarget:self action:@selector(sliderSlideMethod:) forControlEvents:UIControlEventValueChanged];
+    [_playTimeSlider addTarget:self action:@selector(sliderTouchedMethod:) forControlEvents:UIControlEventTouchUpInside];
     [self addSubview:_playTimeSlider];
 }
 
@@ -50,6 +56,9 @@
     _playTimeSlider.frame = self.bounds;
 }
 
+#pragma mark -
+#pragma mark Setter
+
 -(void)setItem:(AVPlayerItem *)item{
     
     _item = item;
@@ -61,6 +70,22 @@
     
     CGFloat buffer = [XLPlayerUtil getBufferTimeOf:item];
     _bufferSlider.value = buffer/duration;
+}
+
+-(void)sliderSlideMethod:(UISlider*)slider
+{
+    _seeking = true;
+    _seekingBlock(slider.value);
+}
+
+-(void)sliderTouchedMethod:(UISlider*)slider
+{
+    _seekFinishBlock(slider.value);
+}
+
+-(void)addSeekBlockSeeking:(SeekBlock)seeking finished:(SeekBlock)finish{
+    _seekingBlock = seeking;
+    _seekFinishBlock = finish;
 }
 
 @end

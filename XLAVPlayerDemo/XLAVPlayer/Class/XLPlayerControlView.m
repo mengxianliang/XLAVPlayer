@@ -9,6 +9,7 @@
 #import "XLPlayerControlView.h"
 #import "XLPlayerTopBar.h"
 #import "XLPlayerBottomBar.h"
+#import "XLPlayerPanView.h"
 
 @interface XLPlayerControlView ()
 {
@@ -19,7 +20,9 @@
     
     PlayBlock _playBlock;
     
-    SeekBlock _seekBlock;
+    BOOL _isHidden;
+    
+    XLPlayerPanView *_panView;
 }
 @end
 
@@ -35,6 +38,11 @@
 
 -(void)buildUI
 {
+    
+    _panView = [[XLPlayerPanView alloc] init];
+    [self addSubview:_panView];
+    
+    
     _topBar = [[XLPlayerTopBar alloc] init];
     [self addSubview:_topBar];
     
@@ -76,8 +84,9 @@
     _topBar.frame = CGRectMake(0, [self topBarY], self.bounds.size.width, [self barHeight]);
     
     _bottomBar.frame = CGRectMake(0, [self bottomBarY], self.bounds.size.width, [self barHeight]);
-    
     _playButton.center = CGPointMake(self.bounds.size.width/2.0f, self.bounds.size.height/2.0f);
+    
+    _panView.frame = self.bounds;
 }
 
 #pragma mark -
@@ -92,10 +101,13 @@
 #pragma mark -
 #pragma mark 功能方法
 
--(void)addControlBlockPlay:(PlayBlock)playBlock seek:(SeekBlock)seekBlock
+-(void)addControlBlockPlay:(PlayBlock)playBlock seek:(SeekBlock)seekBlock back:(VoidBlock)back
 {
     _playBlock = playBlock;
-    _seekBlock = seekBlock;
+    
+    [_bottomBar addSeekBlock:seekBlock];
+    
+    [_topBar addBackBlock:back];
 }
 
 -(void)playMethod:(UIButton*)button
@@ -103,6 +115,25 @@
     button.selected = !button.selected;
     
     _playBlock(button.selected);
+}
+
+-(void)seekFinished{
+    [_bottomBar seekFinished];
+}
+
+//隐藏播放按钮、隐藏顶部、底部工具栏
+-(void)hideMethod
+{
+    _isHidden = !_isHidden;
+    _topBar.hidden = _isHidden;
+    _bottomBar.hidden = _isHidden;
+    _playButton.hidden = _isHidden;
+    
+    //点击显示后，三秒后自动隐藏
+    if (!_isHidden) {
+        [NSObject cancelPreviousPerformRequestsWithTarget:self];
+        [self performSelector:@selector(hideMethod) withObject:nil afterDelay:3];
+    }
 }
 
 @end

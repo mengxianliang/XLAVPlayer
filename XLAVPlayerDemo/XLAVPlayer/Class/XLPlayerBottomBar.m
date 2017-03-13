@@ -14,6 +14,7 @@
     UILabel *_playTimeLabel;
     UILabel *_totalTimeLabel;
     UIButton *_fullScreenButton;
+    
     XLPlayerProgress *_progress;
 }
 @end
@@ -73,7 +74,6 @@
 }
 
 -(void)setItem:(AVPlayerItem *)item{
-    
     _item = item;
     
     CGFloat duration = CMTimeGetSeconds(item.duration);
@@ -84,11 +84,27 @@
         return;
     }
     
+    if (_progress.seeking) {return;}
+    
     _progress.item = item;
     
     _playTimeLabel.text = [XLPlayerUtil getTimeStringFromSecond:CMTimeGetSeconds(item.currentTime)];
     
     _totalTimeLabel.text = [XLPlayerUtil getTimeStringFromSecond:duration];
+}
+
+-(void)addSeekBlock:(SeekBlock)finish
+{
+    //更新播放时间
+    [_progress addSeekBlockSeeking:^(CGFloat value) {
+        CGFloat duration = CMTimeGetSeconds(_item.duration);
+        CGFloat playTime = duration * value;
+        _playTimeLabel.text = [XLPlayerUtil getTimeStringFromSecond:playTime];
+    } finished:finish];
+}
+
+-(void)seekFinished{
+    _progress.seeking = false;
 }
 
 @end
