@@ -107,15 +107,4 @@
     _progress.seeking = false;
 }
 
--(void)seek{
-    _progress.seeking = false;
-}
--(void)seek1{
-    _progress.seeking = false;
-}
--(void)seek2{
-    _progress.seeking = false;
-}
-
-
 @end
