@@ -21,7 +21,7 @@
 
 @implementation XLPlayerBottomBar
 
--(instancetype)init{
+- (instancetype)init {
     
     if (self = [super init]) {
         [self buildUI];
@@ -29,7 +29,7 @@
     return self;
 }
 
--(void)buildUI{
+- (void)buildUI {
     
     _playTimeLabel = [[UILabel alloc] init];
     _playTimeLabel.textAlignment = NSTextAlignmentCenter;
@@ -53,7 +53,7 @@
     [self addSubview:_fullScreenButton];
 }
 
--(void)layoutSubviews{
+- (void)layoutSubviews {
     
     [super layoutSubviews];
     
@@ -73,7 +73,7 @@
     _fullScreenButton.frame = CGRectMake(CGRectGetMaxX(_totalTimeLabel.frame) + margin, margin, btnWidth, height);
 }
 
--(void)setItem:(AVPlayerItem *)item{
+- (void)setItem:(AVPlayerItem *)item {
     _item = item;
     
     CGFloat duration = CMTimeGetSeconds(item.duration);
@@ -93,8 +93,7 @@
     _totalTimeLabel.text = [XLPlayerUtil getTimeStringFromSecond:duration];
 }
 
--(void)addSeekBlock:(SeekBlock)finish
-{
+- (void)addSeekBlock:(SeekBlock)finish {
     //更新播放时间
     [_progress addSeekBlockSeeking:^(CGFloat value) {
         CGFloat duration = CMTimeGetSeconds(_item.duration);
@@ -103,7 +102,11 @@
     } finished:finish];
 }
 
--(void)seekFinished{
+-(void)goToFullScreen:(UIButton*)button{
+    button.selected = !button.selected;
+}
+
+- (void)seekFinished {
     _progress.seeking = false;
 }
 

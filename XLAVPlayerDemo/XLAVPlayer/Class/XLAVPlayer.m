@@ -10,15 +10,19 @@
 #import "XLPlayerControlView.h"
 
 
-@interface XLAVPlayer ()
-{
+@interface XLAVPlayer () {
+    
     AVPlayer *_player;
+    
     AVPlayerLayer *_playerLayer;
+    
     NSTimer *_timer;
     
     XLPlayerControlView *_controlView;
     
     VoidBlock _backBlock;
+    
+    CGRect _originalRect;
 }
 @end
 
@@ -35,11 +39,26 @@
 }
 
 -(instancetype)init{
-    
     if (self = [super init]) {
+        
         [self buildUI];
+        
+        [self buildData];
     }
     return self;
+}
+
+-(void)showInView:(UIView*)view frame:(CGRect)frame back:(VoidBlock)back{
+    
+    [_timer setFireDate:[NSDate date]];
+    
+    [view addSubview:self];
+    
+    self.frame = frame;
+    
+    _originalRect = frame;
+    
+    _backBlock = back;
 }
 
 -(void)buildUI{
@@ -73,11 +92,18 @@
 }
 
 
-
--(void)layoutSubviews{
+- (void)buildData {
     
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(orientationChanged:) name:UIDeviceOrientationDidChangeNotification object:nil];
+}
+
+
+
+- (void)layoutSubviews {
     [super layoutSubviews];
+    
     _playerLayer.frame = self.layer.bounds;
+    
     _controlView.frame = self.bounds;
     
     [self addTestBorderColor];
@@ -86,6 +112,7 @@
 -(void)updatePlayer{
     
     _controlView.item = _player.currentItem;
+    
     
     switch (_player.status) {
         case AVPlayerStatusUnknown:
@@ -103,16 +130,7 @@
     }
 }
 
--(void)showInView:(UIView*)view frame:(CGRect)frame back:(VoidBlock)back{
-    
-    [_timer setFireDate:[NSDate date]];
-    
-    [view addSubview:self];
-    
-    self.frame = frame;
-    
-    _backBlock = back;
-}
+
 
 #pragma mark -
 #pragma mark Setter&Getter
@@ -153,6 +171,18 @@
     _backBlock();
     [self stop];
 }
+
+#pragma mark -
+#pragma mark 旋转方法
+-(void)orientationChanged:(NSNotification*)notification{
+    UIDeviceOrientation currentOrientation = [[UIDevice currentDevice] orientation];
+    if (currentOrientation == UIDeviceOrientationPortrait) {
+        self.frame = _originalRect;
+    }else{
+        self.frame = [UIScreen mainScreen].bounds;
+    }
+}
+
 
 #pragma mark -
 #pragma mark 测试方法

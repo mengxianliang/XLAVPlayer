@@ -8,8 +8,8 @@
 
 #import "XLPlayerProgress.h"
 
-@interface XLPlayerProgress ()
-{
+@interface XLPlayerProgress () {
+    
     UISlider *_bufferSlider;
     
     UISlider *_playTimeSlider;
@@ -22,16 +22,14 @@
 
 @implementation XLPlayerProgress
 
--(instancetype)init
-{
+- (instancetype)init {
     if (self = [super init]) {
         [self buildUI];
     }
     return self;
 }
 
--(void)buildUI
-{
+- (void)buildUI {
     _bufferSlider = [[UISlider alloc] init];
     [_bufferSlider setMinimumTrackTintColor:[UIColor colorWithRed:224/255.0f green:224/255.0f blue:224/255.0f alpha:1]];
     [_bufferSlider setMaximumTrackTintColor:[UIColor colorWithWhite:1 alpha:0.5]];
@@ -47,8 +45,7 @@
     [self addSubview:_playTimeSlider];
 }
 
--(void)layoutSubviews
-{
+- (void)layoutSubviews {
     [super layoutSubviews];
     
     _bufferSlider.frame = self.bounds;
@@ -59,7 +56,7 @@
 #pragma mark -
 #pragma mark Setter
 
--(void)setItem:(AVPlayerItem *)item{
+- (void)setItem:(AVPlayerItem *)item {
     
     _item = item;
     
@@ -72,18 +69,16 @@
     _bufferSlider.value = buffer/duration;
 }
 
--(void)sliderSlideMethod:(UISlider*)slider
-{
+- (void)sliderSlideMethod:(UISlider*)slider {
     _seeking = true;
     _seekingBlock(slider.value);
 }
 
--(void)sliderTouchedMethod:(UISlider*)slider
-{
+- (void)sliderTouchedMethod:(UISlider*)slider {
     _seekFinishBlock(slider.value);
 }
 
--(void)addSeekBlockSeeking:(SeekBlock)seeking finished:(SeekBlock)finish{
+- (void)addSeekBlockSeeking:(SeekBlock)seeking finished:(SeekBlock)finish {
     _seekingBlock = seeking;
     _seekFinishBlock = finish;
 }

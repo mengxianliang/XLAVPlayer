@@ -14,6 +14,7 @@
 @interface XLPlayerControlView ()
 {
     XLPlayerTopBar *_topBar;
+    
     XLPlayerBottomBar *_bottomBar;
     
     UIButton *_playButton;
@@ -61,24 +62,20 @@
     [self addSubview:_playButton];
 }
 
--(CGFloat)barHeight
-{
+- (CGFloat)barHeight {
     return 40.0f;
 }
 
--(CGFloat)topBarY
-{
+- (CGFloat)topBarY {
     return _isFullScreen ? 20 : 0;
 }
 
--(CGFloat)bottomBarY
-{
+- (CGFloat)bottomBarY {
     return self.bounds.size.height - [self barHeight];
 }
 
 
--(void)layoutSubviews
-{
+- (void)layoutSubviews {
     [super layoutSubviews];
     
     _topBar.frame = CGRectMake(0, [self topBarY], self.bounds.size.width, [self barHeight]);
@@ -92,8 +89,7 @@
 #pragma mark -
 #pragma mark Setters
 
--(void)setItem:(AVPlayerItem *)item
-{
+- (void)setItem:(AVPlayerItem *)item {
     _item = item;
     _bottomBar.item = item;
 }
@@ -101,8 +97,7 @@
 #pragma mark -
 #pragma mark 功能方法
 
--(void)addControlBlockPlay:(PlayBlock)playBlock seek:(SeekBlock)seekBlock back:(VoidBlock)back
-{
+- (void)addControlBlockPlay:(PlayBlock)playBlock seek:(SeekBlock)seekBlock back:(VoidBlock)back {
     _playBlock = playBlock;
     
     [_bottomBar addSeekBlock:seekBlock];
@@ -110,20 +105,18 @@
     [_topBar addBackBlock:back];
 }
 
--(void)playMethod:(UIButton*)button
-{
+- (void)playMethod:(UIButton*)button {
     button.selected = !button.selected;
     
     _playBlock(button.selected);
 }
 
--(void)seekFinished{
+- (void)seekFinished {
     [_bottomBar seekFinished];
 }
 
 //隐藏播放按钮、隐藏顶部、底部工具栏
--(void)hideMethod
-{
+- (void)hideMethod {
     _isHidden = !_isHidden;
     _topBar.hidden = _isHidden;
     _bottomBar.hidden = _isHidden;

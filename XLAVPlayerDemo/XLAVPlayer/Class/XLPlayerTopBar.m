@@ -8,9 +8,9 @@
 
 #import "XLPlayerTopBar.h"
 
-@interface XLPlayerTopBar ()
-{
+@interface XLPlayerTopBar () {
     UIButton *_backButton;
+    
     UILabel *_titleLabel;
     
     VoidBlock _backBlock;
@@ -19,15 +19,14 @@
 
 @implementation XLPlayerTopBar
 
--(instancetype)init{
+- (instancetype)init {
     if (self = [super init]) {
         [self buildUI];
     }
     return self;
 }
 
--(void)buildUI
-{
+- (void)buildUI {
     _backButton = [[UIButton alloc] init];
     [_backButton setImage:[UIImage imageNamed:@"player_backButton"] forState:UIControlStateNormal];
     [_backButton addTarget:self action:@selector(backMethod) forControlEvents:UIControlEventTouchUpInside];
@@ -37,8 +36,7 @@
     [self addSubview:_titleLabel];
 }
 
--(void)layoutSubviews
-{
+- (void)layoutSubviews {
     [super layoutSubviews];
     
     CGFloat margin = 5.0f;
@@ -51,14 +49,13 @@
     _titleLabel.frame = CGRectMake(CGRectGetMaxX(_backButton.frame) + margin, margin, labelWidth, height);
 }
 
--(void)backMethod
-{
+- (void)backMethod {
     _backBlock();
 }
 
 #pragma mark -
 #pragma mark 功能方法
--(void)addBackBlock:(VoidBlock)block{
+- (void)addBackBlock:(VoidBlock)block {
     _backBlock = block;
 }
 

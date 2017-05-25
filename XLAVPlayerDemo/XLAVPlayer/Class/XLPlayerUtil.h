@@ -23,6 +23,4 @@ typedef void(^VoidBlock)(void);
 //get bufferTime
 +(CGFloat)getBufferTimeOf:(AVPlayerItem*)item;
 
-
-
 @end

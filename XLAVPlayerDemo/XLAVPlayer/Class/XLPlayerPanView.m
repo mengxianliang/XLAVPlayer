@@ -8,16 +8,14 @@
 
 #import "XLPlayerPanView.h"
 
-@interface XLPlayerPanView ()
-{
+@interface XLPlayerPanView () {
     CGPoint _startPoint;
 }
 @end
 
 @implementation XLPlayerPanView
 
--(instancetype)init
-{
+-(instancetype)init {
     if (self = [super init]) {
         UIPanGestureRecognizer *pan = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(panMethod:)];
         [self addGestureRecognizer:pan];
@@ -25,7 +23,7 @@
     return self;
 }
 
--(void)panMethod:(UIPanGestureRecognizer*)pan{
+- (void)panMethod:(UIPanGestureRecognizer*)pan {
     switch (pan.state) {
         case UIGestureRecognizerStateBegan:
             break;
@@ -41,7 +39,7 @@
     }
 }
 
--(void)doPanChanged:(UIPanGestureRecognizer*)pan{
+- (void)doPanChanged:(UIPanGestureRecognizer*)pan {
     
     if (CGPointEqualToPoint(_startPoint, CGPointZero)) {
         _startPoint = [pan locationInView:self];
