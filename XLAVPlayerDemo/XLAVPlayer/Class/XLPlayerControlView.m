@@ -66,10 +66,6 @@
     return 40.0f;
 }
 
-- (CGFloat)topBarY {
-    return _isFullScreen ? 20 : 0;
-}
-
 - (CGFloat)bottomBarY {
     return self.bounds.size.height - [self barHeight];
 }
@@ -78,7 +74,7 @@
 - (void)layoutSubviews {
     [super layoutSubviews];
     
-    _topBar.frame = CGRectMake(0, [self topBarY], self.bounds.size.width, [self barHeight]);
+    _topBar.frame = CGRectMake(0, 0, self.bounds.size.width, [self barHeight]);
     
     _bottomBar.frame = CGRectMake(0, [self bottomBarY], self.bounds.size.width, [self barHeight]);
     _playButton.center = CGPointMake(self.bounds.size.width/2.0f, self.bounds.size.height/2.0f);
@@ -94,18 +90,26 @@
     _bottomBar.item = item;
 }
 
+-(void)setFullScreen:(BOOL)fullScreen{
+    _fullScreen = fullScreen;
+    _bottomBar.fullScreen = fullScreen;
+}
+
 #pragma mark -
 #pragma mark 功能方法
 
-- (void)addControlBlockPlay:(PlayBlock)playBlock seek:(SeekBlock)seekBlock back:(VoidBlock)back {
+- (void)addControlBlockPlay:(PlayBlock)playBlock seek:(SeekBlock)seekBlock fullScreen:(FullScreenBlock)fullScreenBlock back:(VoidBlock)back {
     _playBlock = playBlock;
     
     [_bottomBar addSeekBlock:seekBlock];
+    
+    [_bottomBar addFullScreenBlock:fullScreenBlock];
     
     [_topBar addBackBlock:back];
 }
 
 - (void)playMethod:(UIButton*)button {
+    
     button.selected = !button.selected;
     
     _playBlock(button.selected);

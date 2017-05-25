@@ -11,11 +11,13 @@
 
 @interface XLPlayerControlView : UIView
 
-@property (assign,nonatomic) BOOL isFullScreen;
+@property (nonatomic, assign) BOOL fullScreen;
 
-@property (strong, nonatomic) AVPlayerItem *item;
+@property (nonatomic, strong) AVPlayerItem *item;
 
--(void)addControlBlockPlay:(PlayBlock)playBlock seek:(SeekBlock)seekBlock back:(VoidBlock)back;
+-(void)addControlBlockPlay:(PlayBlock)playBlock seek:(SeekBlock)seekBlock fullScreen:(FullScreenBlock)fullScreenBlock back:(VoidBlock)back;
+
+
 
 -(void)seekFinished;
 

@@ -16,6 +16,8 @@
     UIButton *_fullScreenButton;
     
     XLPlayerProgress *_progress;
+    
+    FullScreenBlock _fullScreenBlock;
 }
 @end
 
@@ -50,7 +52,10 @@
     [_fullScreenButton setImage:[UIImage imageNamed:@"goToFullScreen"] forState:UIControlStateNormal];
     [_fullScreenButton setImage:[UIImage imageNamed:@"existFullScreen"] forState:UIControlStateSelected];
     [_fullScreenButton setImageEdgeInsets:UIEdgeInsetsMake(5, 5, 5, 5)];
+    [_fullScreenButton addTarget:self action:@selector(goToFullScreen:) forControlEvents:UIControlEventTouchUpInside];
     [self addSubview:_fullScreenButton];
+    
+    _fullScreen = false;
 }
 
 - (void)layoutSubviews {
@@ -104,6 +109,17 @@
 
 -(void)goToFullScreen:(UIButton*)button{
     button.selected = !button.selected;
+    _fullScreen = button.selected;
+    _fullScreenBlock(_fullScreen);
+}
+
+-(void)setFullScreen:(BOOL)fullScreen{
+    _fullScreen = fullScreen;
+    _fullScreenButton.selected = _fullScreen;
+}
+
+-(void)addFullScreenBlock:(FullScreenBlock)fullScreen{
+    _fullScreenBlock = fullScreen;
 }
 
 - (void)seekFinished {

@@ -83,6 +83,8 @@
         }
     } seek:^(CGFloat value) {
         [weekSelf seekToPercent:value];
+    } fullScreen:^(BOOL fullScreen) {
+        [weekSelf goToFullScreen:fullScreen];
     } back:^{
         [weekSelf back];
     }];
@@ -177,9 +179,27 @@
 -(void)orientationChanged:(NSNotification*)notification{
     UIDeviceOrientation currentOrientation = [[UIDevice currentDevice] orientation];
     if (currentOrientation == UIDeviceOrientationPortrait) {
-        self.frame = _originalRect;
-    }else{
-        self.frame = [UIScreen mainScreen].bounds;
+        _controlView.fullScreen = false;
+        [UIView animateWithDuration:0.3 animations:^{
+            self.frame = _originalRect;
+        }];
+    }else if (currentOrientation == UIDeviceOrientationLandscapeLeft || currentOrientation == UIDeviceOrientationLandscapeRight){
+        _controlView.fullScreen = true;
+        [UIView animateWithDuration:0.3 animations:^{
+            self.frame = [UIScreen mainScreen].bounds;
+        }];
+    }
+}
+
+-(void)goToFullScreen:(BOOL)fullScreen{
+    if ([[UIDevice currentDevice] respondsToSelector:@selector(setOrientation:)]) {
+        SEL selector = NSSelectorFromString(@"setOrientation:");
+        NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:[UIDevice instanceMethodSignatureForSelector:selector]];
+        [invocation setSelector:selector];
+        [invocation  setTarget:[UIDevice currentDevice]];
+        int val  =  fullScreen ? UIInterfaceOrientationLandscapeRight : UIInterfaceOrientationPortrait ;
+        [invocation setArgument:&val atIndex:2];
+        [invocation invoke];
     }
 }
 

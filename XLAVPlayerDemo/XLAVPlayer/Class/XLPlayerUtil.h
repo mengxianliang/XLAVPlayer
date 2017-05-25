@@ -11,6 +11,8 @@
 
 typedef void(^PlayBlock)(BOOL play);
 
+typedef void(^FullScreenBlock)(BOOL fullScreen);
+
 typedef void(^SeekBlock)(CGFloat value);
 
 typedef void(^VoidBlock)(void);
