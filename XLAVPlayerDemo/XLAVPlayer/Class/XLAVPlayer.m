@@ -115,7 +115,6 @@
     
     _controlView.item = _player.currentItem;
     
-    
     switch (_player.status) {
         case AVPlayerStatusUnknown:
 //            NSLog(@"加载中");
@@ -144,7 +143,7 @@
     [_player replaceCurrentItemWithPlayerItem:item];
 }
 #pragma mark -
-#pragma mark 功能方法
+#pragma mark 播放器功能方法
 -(void)play{
 
     [_player play];
@@ -201,6 +200,25 @@
         [invocation setArgument:&val atIndex:2];
         [invocation invoke];
     }
+}
+
+#pragma mark -
+#pragma mark 辅助方法
+- (void)hideControlView {
+    _controlView.alpha = 1;
+    [UIView animateWithDuration:0.3 animations:^{
+        _controlView.alpha = 0;
+    } completion:^(BOOL finished) {
+        _controlView.hidden = true;
+    }];
+}
+
+- (void)showControlView {
+    _controlView.hidden = false;
+    _controlView.alpha = 0;
+    [UIView animateWithDuration:0.3 animations:^{
+        _controlView.alpha = 1;
+    }];
 }
 
 
