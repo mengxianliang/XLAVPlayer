@@ -19,10 +19,14 @@ typedef void(^VoidBlock)(void);
 
 @interface XLPlayerUtil : NSObject
 
-//Second ---> timeString
+/**
+ 秒数 转成 时分秒格式的字符串
+ */
 +(NSString*)getTimeStringFromSecond:(CGFloat)second;
 
-//get bufferTime
+/**
+ 获取缓冲时间
+ */
 +(CGFloat)getBufferTimeOf:(AVPlayerItem*)item;
 
 @end
