@@ -10,4 +10,6 @@
 
 @interface XLPlayerPanView : UIView
 
+//- (void)addTapBlock:(VoidBlock)tapBlock seekBlock:()
+
 @end

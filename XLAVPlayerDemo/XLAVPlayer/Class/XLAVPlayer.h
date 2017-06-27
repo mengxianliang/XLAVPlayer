@@ -17,16 +17,34 @@ typedef NS_ENUM(NSInteger,XLAVPlayerStatus){
 
 @interface XLAVPlayer : UIView
 
+/**
+ 播放地址
+ */
 @property (nonatomic, copy) NSURL *playUrl;
 
+/**
+ 播放
+ */
 -(void)play;
 
+/**
+ 暂停
+ */
 -(void)pause;
 
+/**
+ 停止
+ */
 -(void)stop;
 
+/**
+ 单利模式
+ */
 +(XLAVPlayer*)sharePlayer;
 
+/**
+ 展示方法
+ */
 -(void)showInView:(UIView*)view frame:(CGRect)frame back:(VoidBlock)back;
 
 
