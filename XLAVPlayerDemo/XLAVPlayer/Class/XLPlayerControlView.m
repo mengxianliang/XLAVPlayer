@@ -109,9 +109,7 @@
 }
 
 - (void)playMethod:(UIButton*)button {
-    
     button.selected = !button.selected;
-    
     _playBlock(button.selected);
 }
 
