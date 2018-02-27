@@ -11,8 +11,8 @@
 #import "XLPlayerBottomBar.h"
 #import "XLPlayerPanView.h"
 
-@interface XLPlayerControlView ()
-{
+@interface XLPlayerControlView () {
+    
     XLPlayerTopBar *_topBar;
     
     XLPlayerBottomBar *_bottomBar;
